@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use App\Entity\Cliente;
+use App\Entity\Servicio;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 // Importamos la interfaz para encriptar contraseñas
@@ -41,7 +42,16 @@ class AppFixtures extends Fixture
             ['H88888888', 'Limpiezas Aidalai', 'luisma@aidalai.es', '910888999']
         ];
 
+        // 3.Datos de prueba de servicios
+        $serviciosDePrueba = [
+            ['Instalación Fibra Óptica', 'Internet', 45.50, true],
+            ['Línea Móvil 5G Ilimitada', 'Telefonía', 19.99, true],
+            ['Pack Fibra 600Mb + 2 lineas', 'Convergente', 59.90, true],
+            ['Mantenimiento Centralita Virtual', 'Empresas', 35.00, true]
+        ];
+
         $clienteIndex = 0;
+        $servicioIndex = 0;
 
         foreach ($usuariosData as $uData) {
             //creamos usuario
@@ -70,6 +80,22 @@ class AppFixtures extends Fixture
                 $manager->persist($cliente);
                 
                 $clienteIndex++;
+            }
+
+            // Si existe, se pone un servicio por usuario
+            if (isset($serviciosDePrueba[$servicioIndex])) {
+                $datosServicio = $serviciosDePrueba[$servicioIndex];
+                
+                $servicio = new Servicio();
+                $servicio->setNombre($datosServicio[0]);
+                $servicio->setTipo($datosServicio[1]);
+                $servicio->setPrecioMensual($datosServicio[2]);
+                $servicio->setActiva($datosServicio[3]);
+                $servicio->setUser($user); //asociamos el servicio al usuario
+                
+                $manager->persist($servicio);
+                
+                $servicioIndex++;
             }
         }
         $manager->flush();
