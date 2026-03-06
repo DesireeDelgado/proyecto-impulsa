@@ -10,33 +10,44 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault(); 
-        setError(''); 
+    e.preventDefault(); 
+    setError(''); 
 
-        try {
-        
-            const response = await api.post('/login', {
-                username: email,
-                password: password
-            });
+    try {
+        const response = await api.post('/login', { 
+            username: email, // <--- Enviamos el valor de 'email' pero con la etiqueta 'username'
+            password: password 
+        });
 
-            //Token de Symfony
-            const token = response.data.token;
+        const token = response.data.token;
+
+        if (token) {
 
             localStorage.setItem('token', token);
 
-            // Redirigimos al usuario a la pantalla de clientes
-            navigate('/clientes');
+            navigate('/clientes', { replace: true });
+        } else {
+            setError('Error de protocolo: El servidor no ha enviado la clave de acceso.');
+        }
 
         } catch (err: any) {
-            // Axios mete los errores HTTP (como el 401) dentro de err.response
-            if (err.response && err.response.status === 401) {
-                setError('Email o contraseña incorrectos');
+            
+            if (err.response) {
+                // El servidor respondió con un código de error (4xx, 5xx)
+                if (err.response.status === 401) {
+                    setError('Email o contraseña incorrectos. Inténtalo de nuevo.');
+                } else {
+                    setError(`Error del servidor: ${err.response.status}`);
+                }
+            } else if (err.request) {
+                // La petición se hizo pero no hubo respuesta (servidor caído)
+                setError('No se ha podido conectar con el servidor. Verifica que Symfony esté arrancado.');
             } else {
-                setError('Error al intentar conectar con el servidor');
+                // Error al configurar la petición
+                setError('Ocurrió un error inesperado al intentar iniciar sesión.');
             }
         }
-  };
+    };
 
     return (
     // Envolvemos todo en un contenedor que ocupa toda la pantalla para centrar la tarjeta

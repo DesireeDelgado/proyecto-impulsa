@@ -30,7 +30,7 @@ const Clientes = () => {
         const response = await api.get('/clientes');
 
         setClientes(response.data);
-        
+
       } catch (err: any) {
         setError('No se han podido cargar los clientes. ¿Ha caducado tu sesión?');
       } finally {
@@ -57,12 +57,12 @@ const Clientes = () => {
             <h1 className="text-3xl font-bold text-gray-800">Mis Clientes</h1>
             <p className="text-gray-500">Gestiona tu cartera de clientes y sus servicios</p>
           </div>
-          <Link 
-            to="/nuevo-cliente" 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-semibold shadow-md transition-all flex items-center gap-2"
-          >
-            <span>+</span> Nuevo Cliente
-          </Link>
+            <Link 
+                to="/nuevo-cliente" 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-semibold shadow-md transition-all flex items-center gap-2"
+                >
+                <span className="text-xl">+</span> Nuevo Cliente
+            </Link>
         </div>
 
         {error && (

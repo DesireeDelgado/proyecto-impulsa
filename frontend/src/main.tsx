@@ -1,10 +1,12 @@
-import { StrictMode } from 'react'
-import { createBrowserRouter, RouterProvider} from 'react-router-dom'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import Clientes from './pages/Clientes.tsx'
-import Login from './pages/Login.tsx'
+import { StrictMode } from 'react';
+import { createBrowserRouter, RouterProvider} from 'react-router-dom';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App.tsx';
+import Clientes from './pages/Clientes.tsx';
+import Login from './pages/Login.tsx';
+import NuevoCliente from './pages/NuevoCliente.tsx';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -18,7 +20,9 @@ const router = createBrowserRouter([
   {
     path: "/clientes",
     element: <Clientes />,
-  }
+  },
+  { path: "/nuevo-cliente",
+    element: <ProtectedRoute><NuevoCliente /></ProtectedRoute> }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
