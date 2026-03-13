@@ -84,4 +84,16 @@ class Contrato
 
         return $this;
     }
+
+    #[Groups(['cliente:read', 'contrato:read'])]
+    public function getNombreServicio(): ?string
+    {
+        return $this->servicio ? $this->servicio->getNombre() : null;
+    }
+
+    #[Groups(['cliente:read', 'contrato:read'])]
+    public function getPrecio(): ?float
+    {
+        return $this->servicio ? $this->servicio->getPrecioMensual() : null;
+    }
 }
